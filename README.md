@@ -92,3 +92,61 @@ get_client = xui.get_client(
     'total': 0
 }
 ```
+
+# Create vmess and vless config string
+- Import config_generator
+```python
+from xui.config_gen import config_generator
+```
+
+- VMESS:
+```python
+config = {
+    "v": "2",
+    "ps": "Staliox-Me",
+    "add": "staliox.com",
+    "port": "443",
+    "id": "a85def57-0a86-43d1-b15c-0494519067c6",
+    "aid": "0",
+    "scy": "auto",
+    "net": "tcp",
+    "type": "ws",
+    "host": "staliox.site",
+    "path": "/",
+    "tls": "tls",
+    "sni": "staliox.site",
+    "alpn": "h2,http/1.1",
+    "fp": "chrome"
+}
+
+generate_config = config_generator("vmess", config)
+
+# Result
+vmess://eyJ2IjogIjIiLCAicHMiOiAiU3RhbGlveC1NZSIsICJhZGQiOiAic3RhbGlveC5jb20iLCAicG9ydCI6ICI0NDMiLCAiaWQiOiAiYTg1ZGVmNTctMGE4Ni00M2QxLWIxNWMtMDQ5NDUxOTA2N2M2IiwgImFpZCI6ICIwIiwgInNjeSI6ICJhdXRvIiwgIm5ldCI6ICJ0Y3AiLCAidHlwZSI6ICJ3cyIsICJob3N0IjogInN0YWxpb3guc2l0ZSIsICJwYXRoIjogIi8iLCAidGxzIjogInRscyIsICJzbmkiOiAic3RhbGlveC5zaXRlIiwgImFscG4iOiAiaDIsaHR0cC8xLjEiLCAiZnAiOiAiY2hyb21lIn0=
+```
+
+- VLESS:
+```python
+config = {
+    "ps": "Staliox-Me",
+    "add": "staliox.com",
+    "port": "443",
+    "id": "a85def57-0a86-43d1-b15c-0494519067c6"
+}
+
+data = {
+    "security": "tls",
+    "type": "ws",
+    "host": "staliox.site",
+    "path": "/",
+    "tls": "tls",
+    "sni": "staliox.site",
+    "alpn": "h2,http/1.1",
+    "fp": "chrome"
+}
+
+generate_config = config_generator("vless", config, data)
+
+# Result
+vless://a85def57-0a86-43d1-b15c-0494519067c6@staliox.com:443?security=tls&type=ws&host=staliox.site&path=%2F&tls=tls&sni=staliox.site&alpn=h2%2Chttp%2F1.1&fp=chrome#Staliox-Me
+```
