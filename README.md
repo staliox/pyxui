@@ -1,5 +1,5 @@
-# PyXUI
-An application with python that allows you to modify your xui panel ([Sanaeii 3x-ui](https://github.com/MHSanaei/3x-ui))
+# PyXUI 
+An application with python that allows you to modify your xui panel ([Sanaeii 3x-ui](https://github.com/MHSanaei/3x-ui)) ([alireza0 x-ui](https://github.com/alireza0/x-ui))
 
 ## How To Use
 - Download repositiory and extract it
