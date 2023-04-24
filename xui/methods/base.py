@@ -20,8 +20,8 @@ class Base:
             cookie = None
 
         if not params:
-            response = requests.get(url, cookies=cookie, verify=False)
+            response = requests.get(url, cookies=cookie)
         else:
-            response = requests.post(url, cookies=cookie, data=params, verify=False)
+            response = requests.post(url, cookies=cookie, data=params)
 
         return response
