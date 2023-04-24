@@ -16,11 +16,15 @@ class Clients:
 
                 return client
 
-    def add_client(self: "xui.XUI", id: int, email: str, uuid: str, limit_ip: int, expire_time: int) -> Any:
+    def add_client(self: "xui.XUI", inbound_id: int, email: str, uuid: str, limit_ip: int, total_gb: int, expire_time: int) -> Any:
         params = {
-            "id": id,
-            "settings": '{{\n  "clients": [\n    {{\n      "id": "{0}",\n      "email": "{1}",\n      "limitIp": {2},\n      "expiryTime": {3}\n    }}\n  ]}}'.format(uuid, email, limit_ip, expire_time)
+            "id": inbound_id,
+            "settings": '{{\n  "clients": [\n    {{\n      "id": "{}",\n      "email": "{}",\n      "limitIp": {},\n      "totalGB": {},\n      "expiryTime": {}\n    }}\n  ]}}'.format(uuid, email, limit_ip, total_gb, expire_time)
         }
 
         _send_request = self.request("addClient", params)
-        return _send_request.json()
+
+        if _send_request.status_code != 404 and _send_request.headers.get('Content-Type').startswith('application/json'):
+            return _send_request.json()
+        else:
+            raise errors.NotFound()
