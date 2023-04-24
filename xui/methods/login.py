@@ -12,13 +12,11 @@ class Login:
 
         if _send_request.status_code == 200:
             self.session_string = _send_request.cookies.get("session")
-            print(self.session_string)
 
-            try:
-                self.get_inbounds()
-            except errors.NotFound:
+            if self.session_string:
+                return True
+            else:
                 raise errors.BadLogin()
 
-            return True
         else:
             raise errors.BadLogin()

@@ -8,7 +8,7 @@ class Base:
     def _panel_address(self: "xui.XUI") -> str:
         return f"{self.https}://{self.address}:{self.port}{self.path}/"
 
-    def request(self: "xui.XUI", query: str, params: Union[dict, bool] = False) -> requests.Response:
+    def request(self: "xui.XUI", query: str, params: Union[dict, bool] = None) -> requests.Response:
         if query == "login":
             url = self._panel_address + query
         else:
