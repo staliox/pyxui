@@ -3,9 +3,9 @@ An application with python that allows you to modify your xui panel ([Sanaeii 3x
 
 ## How To Use
 - Download repositiory and extract it
-- Import xui in your .py file
+- Import pyxui in your .py file
 ```python
-from xui import XUI
+from pyxui import XUI
 
 xui = XUI("staliox.com", 54321, True) # Make note if you use https set True else don't set anything
 xui = XUI("staliox.com", 54321, True, "6fo3") # If you set panel path, you can set your panel path string
@@ -13,7 +13,7 @@ xui = XUI("staliox.com", 54321, True, "6fo3") # If you set panel path, you can s
 
 - Login in your panel
 ```python
-from xui.errors import BadLogin
+from pyxui.errors import BadLogin
 
 try:
   xui.login(USERNAME, PASSWORD)
@@ -108,7 +108,7 @@ get_client = xui.delete_client(
 # Create vmess and vless config string
 - Import config_generator
 ```python
-from xui.config_gen import config_generator
+from pyxui.config_gen import config_generator
 ```
 
 - VMESS:
