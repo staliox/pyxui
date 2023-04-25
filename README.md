@@ -25,7 +25,7 @@ except BadLogin:
 ```python
 get_inbounds = xui.get_inbounds()
 
-# Result:
+# Result
 {
     "success": true,
     "msg": "",
@@ -61,15 +61,19 @@ get_inbounds = xui.get_inbounds()
 }
 ```
 
-- Add client to inbound
+- Add client to exist inbound
 ```python
 get = xui.add_client(
     inbound_id=1,
     email="fdsfgf@gmal.com",
     uuid="5d3d1bac-49cd-4b66-8be9-a728efa205fa",
-    limit_ip=0,
-    total_gb=5368709120,
-    expire_time=1684948641772
+    enable = True,
+    flow = "",
+    limit_ip = 0,
+    total_gb = 5368709120,
+    expire_time = 1684948641772,
+    telegram_id = "",
+    subscription_id = ""
 )
 ```
 
@@ -92,6 +96,14 @@ get_client = xui.get_client(
     'total': 0
 }
 ```
+
+- Delete client from exist inbound:
+```python
+get_client = xui.delete_client(
+    id=1,
+    email="Me",
+    uuid="5d3d1bac-49cd-4b66-8be9-a728efa205fa" # Make note you don't have to pass both of them (emaill, uuid), just one is enough
+)
 
 # Create vmess and vless config string
 - Import config_generator
