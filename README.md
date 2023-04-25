@@ -7,8 +7,8 @@ An application with python that allows you to modify your xui panel ([Sanaeii 3x
 ```python
 from xui import XUI
 
-xui = XUI("staliox.com, 54321, True) # Make note if you use https set True else don't set anything
-xui = XUI("staliox.com, 54321, True, "6fo3") # If you set panel path, you can set your panel path string
+xui = XUI("staliox.com", 54321, True) # Make note if you use https set True else don't set anything
+xui = XUI("staliox.com", 54321, True, "6fo3") # If you set panel path, you can set your panel path string
 ```
 
 - Login in your panel
