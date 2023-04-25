@@ -1,12 +1,12 @@
 import json
 from typing import Union
 
-import xui
-from xui import errors
+import pyxui
+from pyxui import errors
 
 class Clients:
     def get_client(
-        self: "xui.XUI",
+        self: "pyxui.XUI",
         inbound_id: int,
         email: str = False,
         uuid: str = False
@@ -37,7 +37,6 @@ class Clients:
                 continue
             
             settings = json.loads(inbound['settings'])
-            print(json.dumps(settings))
             
             for client in settings['clients']:
                 if client['email'] != email and client['id'] != uuid:
@@ -45,11 +44,10 @@ class Clients:
                 
                 return client
 
-<<<<<<< HEAD
         raise errors.NotFound()
 
     def add_client(
-        self: "xui.XUI",
+        self: "pyxui.XUI",
         inbound_id: int,
         email: str,
         uuid: str,
@@ -131,7 +129,7 @@ class Clients:
             raise errors.NotFound()
 
     def delete_client(
-        self: "xui.XUI",
+        self: "pyxui.XUI",
         inbound_id: int,
         email: str = False,
         uuid: str = False
@@ -167,17 +165,3 @@ class Clients:
             return send_request.json()
         else:
             raise errors.NotFound()
-=======
-    def add_client(self: "xui.XUI", inbound_id: int, email: str, uuid: str, limit_ip: int, total_gb: int, expire_time: int) -> Any:
-        params = {
-            "id": inbound_id,
-            "settings": '{{\n  "clients": [\n    {{\n      "id": "{}",\n      "email": "{}",\n      "limitIp": {},\n      "totalGB": {},\n      "expiryTime": {}\n    }}\n  ]}}'.format(uuid, email, limit_ip, total_gb, expire_time)
-        }
-
-        _send_request = self.request("addClient", params)
-
-        if _send_request.status_code != 404 and _send_request.headers.get('Content-Type').startswith('application/json'):
-            return _send_request.json()
-        else:
-            raise errors.NotFound()
->>>>>>> 3c5a0c91d28d9de6b5919a3391055ae670ccfbe7
