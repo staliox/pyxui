@@ -1,13 +1,12 @@
 import requests
 
-import xui
+import pyxui
 
 class Base:
     @property
     def _panel_address(self: "xui.XUI") -> str:
         return f"{self.https}://{self.address}:{self.port}{self.path}/"
 
-<<<<<<< HEAD
     def request(
         self: "xui.XUI",
         path: str,
@@ -32,11 +31,6 @@ class Base:
         
         if path == "login":
             url = self._panel_address + path
-=======
-    def request(self: "xui.XUI", query: str, params: Union[dict, bool] = None) -> requests.Response:
-        if query == "login":
-            url = self._panel_address + query
->>>>>>> 3c5a0c91d28d9de6b5919a3391055ae670ccfbe7
         else:
             url = self._panel_address + "xui/API/inbounds/" + path
 
@@ -45,16 +39,14 @@ class Base:
         else:
             cookie = None
 
-<<<<<<< HEAD
         if method == "GET":
-            response = requests.get(url, cookies=cookie, verify=False)
+            response = requests.get(url, cookies=cookie)
         elif method == "POST":
-            response = requests.post(url, cookies=cookie, data=params, verify=False)
-=======
+            response = requests.post(url, cookies=cookie, data=params)
+
         if not params:
             response = requests.get(url, cookies=cookie)
         else:
             response = requests.post(url, cookies=cookie, data=params)
->>>>>>> 3c5a0c91d28d9de6b5919a3391055ae670ccfbe7
 
         return response
