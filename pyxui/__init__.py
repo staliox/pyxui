@@ -1,1 +1,1 @@
-from xui.xui import XUI
+from pyxui.xui import XUI
