@@ -1,7 +1,7 @@
-from xui.methods.base import Base
-from xui.methods.login import Login
-from xui.methods.inbounds import Inbounds
-from xui.methods.clients import Clients
+from pyxui.methods.base import Base
+from pyxui.methods.login import Login
+from pyxui.methods.inbounds import Inbounds
+from pyxui.methods.clients import Clients
 
 class Methods(
     Base,
