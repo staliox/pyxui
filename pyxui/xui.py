@@ -1,4 +1,4 @@
-from xui.methods import Methods
+from pyxui.methods import Methods
 
 class XUI(Methods):
     def __init__(
