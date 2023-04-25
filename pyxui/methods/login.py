@@ -11,7 +11,6 @@ class Login:
     ) -> Any:
         """Login into xui panel.
 
-<<<<<<< HEAD
         Parameters:
             username (``str``):
                 Username of panel
@@ -37,9 +36,6 @@ class Login:
 
         if send_request.status_code == 200:
             self.session_string = send_request.cookies.get("session")
-
-        if _send_request.status_code == 200:
-            self.session_string = _send_request.cookies.get("session")
 
             if self.session_string:
                 return True
