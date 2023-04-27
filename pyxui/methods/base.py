@@ -4,11 +4,11 @@ import pyxui
 
 class Base:
     @property
-    def _panel_address(self: "xui.XUI") -> str:
+    def _panel_address(self: "pyxui.XUI") -> str:
         return f"{self.https}://{self.address}:{self.port}{self.path}/"
 
     def request(
-        self: "xui.XUI",
+        self: "pyxui.XUI",
         path: str,
         method: str,
         params: dict = None
@@ -40,8 +40,8 @@ class Base:
             cookie = None
 
         if method == "GET":
-            response = requests.get(url, cookies=cookie)
+            response = requests.get(url, cookies=cookie, verify=False)
         elif method == "POST":
-            response = requests.post(url, cookies=cookie, data=params)
+            response = requests.post(url, cookies=cookie, data=params, verify=False)
 
         return response
