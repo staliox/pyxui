@@ -157,7 +157,7 @@ class Clients:
         )
         
         send_request = self.request(
-            path=f"{inbound_id}/delClient/{find_client['uuid']}",
+            path=f"{inbound_id}/delClient/{find_client['id']}",
             method="POST"
         )
 
