@@ -80,7 +80,7 @@ get = xui.add_client(
 - Get client information:
 ```python
 get_client = xui.get_client(
-    id=1,
+    inbound_id=1,
     email="Me",
     uuid="5d3d1bac-49cd-4b66-8be9-a728efa205fa" # Make note you don't have to pass both of them (emaill, uuid), just one is enough
 )
@@ -101,7 +101,7 @@ get_client = xui.get_client(
 - Delete client from exist inbound:
 ```python
 get_client = xui.delete_client(
-    id=1,
+    inbound_id=1,
     email="Me",
     uuid="5d3d1bac-49cd-4b66-8be9-a728efa205fa" # Make note you don't have to pass both of them (email, uuid), just one is enough
 )
