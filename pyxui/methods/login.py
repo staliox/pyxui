@@ -27,7 +27,7 @@ class Login:
         
         send_request = self.request(
             path="login",
-            method="GET",
+            method="POST",
             params={
                 'username': username,
                 'password': password
