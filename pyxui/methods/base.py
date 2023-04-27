@@ -44,9 +44,4 @@ class Base:
         elif method == "POST":
             response = requests.post(url, cookies=cookie, data=params)
 
-        if not params:
-            response = requests.get(url, cookies=cookie)
-        else:
-            response = requests.post(url, cookies=cookie, data=params)
-
         return response
