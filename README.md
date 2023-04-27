@@ -152,7 +152,6 @@ data = {
     "type": "ws",
     "host": "staliox.site",
     "path": "/",
-    "tls": "tls",
     "sni": "staliox.site",
     "alpn": "h2,http/1.1",
     "fp": "chrome"
