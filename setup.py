@@ -1,6 +1,6 @@
-from setuptools import setup
+from setuptools import setup, find_packages
     
-VERSION = "0.0.1"
+VERSION = "0.0.2"
 
 with open("README.md", "r") as f:
     readme = f.read()
@@ -19,8 +19,8 @@ setup(
         "xui python",
         "xui panel"
     ],
-    packages=["pyxui"],
-    requires=["requests"],
+    packages=find_packages(),
+    install_requires=["requests"],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
