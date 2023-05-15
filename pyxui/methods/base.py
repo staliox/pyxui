@@ -40,8 +40,8 @@ class Base:
             cookie = None
 
         if method == "GET":
-            response = requests.get(url, cookies=cookie, verify=False)
+            response = requests.get(url, cookies=cookie, verify=self.https)
         elif method == "POST":
-            response = requests.post(url, cookies=cookie, data=params, verify=False)
+            response = requests.post(url, cookies=cookie, data=params, verify=self.https)
 
         return response
