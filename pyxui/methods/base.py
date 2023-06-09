@@ -1,12 +1,9 @@
 import requests
 
 import pyxui
+from pyxui import errors
 
 class Base:
-    @property
-    def _panel_address(self: "pyxui.XUI") -> str:
-        return f"{self.https}://{self.address}:{self.port}{self.path}/"
-
     def request(
         self: "pyxui.XUI",
         path: str,
@@ -30,9 +27,9 @@ class Base:
         """
         
         if path == "login":
-            url = self._panel_address + path
+            url = f"{self.full_address}/login"
         else:
-            url = self._panel_address + "xui/API/inbounds/" + path
+            url = f"{self.full_address}/{self.api_path}/inbounds/{path}"
 
         if self.session_string:
             cookie = {'session': self.session_string}
@@ -45,3 +42,12 @@ class Base:
             response = requests.post(url, cookies=cookie, data=params, verify=self.https)
 
         return response
+
+    def verify_response(
+        self: "pyxui.XUI",
+        response: requests.Response
+    ) -> requests.Response:
+        if response.status_code != 404 and response.headers.get('Content-Type').startswith('application/json'):
+            return response.json()
+        
+        raise errors.NotFound()

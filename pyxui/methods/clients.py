@@ -68,14 +68,14 @@ class Clients:
             email (``str``):
                Email of client
                 
+            uuid (``str``):
+               UUID of client
+                
             enable (``bool``, optional):
                Status of client
                 
             flow (``str``, optional):
                Flow of client
-                
-            uuid (``str``, optional):
-               UUID of client
                 
             limit_ip (``str``, optional):
                IP Limit of client
@@ -109,7 +109,9 @@ class Clients:
                     "tgId": telegram_id,
                     "subId": subscription_id
                 }
-            ]
+            ],
+            "decryption": "none",
+            "fallbacks": []
         }
         
         params = {
@@ -117,16 +119,13 @@ class Clients:
             "settings": json.dumps(settings)
         }
 
-        send_request = self.request(
+        response = self.request(
             path="addClient",
             method="POST",
             params=params
         )
 
-        if send_request.status_code != 404 and send_request.headers.get('Content-Type').startswith('application/json'):
-            return send_request.json()
-        else:
-            raise errors.NotFound()
+        return self.verify_response(response)
 
     def delete_client(
         self: "pyxui.XUI",
@@ -156,12 +155,96 @@ class Clients:
             uuid=uuid
         )
         
-        send_request = self.request(
+        response = self.request(
             path=f"{inbound_id}/delClient/{find_client['id']}",
             method="POST"
         )
 
-        if send_request.status_code != 404 and send_request.headers.get('Content-Type').startswith('application/json'):
-            return send_request.json()
-        else:
-            raise errors.NotFound()
+        return self.verify_response(response)
+
+    def update_client(
+        self: "pyxui.XUI",
+        inbound_id: int,
+        email: str,
+        uuid: str,
+        enable: bool,
+        flow: str,
+        limit_ip: int,
+        total_gb: int,
+        expire_time: int,
+        telegram_id: str,
+        subscription_id: str,
+    ) -> Union[dict, errors.NotFound]:
+        """Add client to exist inbound.
+
+        Parameters:
+            inbound_id (``int``):
+                Inbound id
+                
+            email (``str``):
+               Email of client
+                
+            uuid (``str``):
+               UUID of client
+                
+            enable (``bool``):
+               Status of client
+                
+            flow (``str``):
+               Flow of client
+                
+            limit_ip (``str``):
+               IP Limit of client
+                
+            total_gb (``str``):
+                Download and uploader limition of client and it's in bytes
+                
+            expire_time (``str``):
+                Client expiration date and it's in timestamp (epoch)
+                
+            telegram_id (``str``):
+               Telegram id of client
+                
+            subscription_id (``str``):
+               Subscription id of client
+            
+        Returns:
+            `~Dict`: On success, a dict is returned else 404 error will be raised
+        """
+        
+        find_client = self.get_client(
+            inbound_id=inbound_id,
+            email=email,
+            uuid=uuid
+        )
+        
+        settings = {
+            "clients": [
+                {
+                    "id": uuid,
+                    "email": email,
+                    "enable": enable,
+                    "flow": flow,
+                    "limitIp": limit_ip,
+                    "totalGB": total_gb,
+                    "expiryTime": expire_time,
+                    "tgId": telegram_id,
+                    "subId": subscription_id
+                }
+            ],
+            "decryption": "none",
+            "fallbacks": []
+        }
+            
+        params = {
+            "id": inbound_id,
+            "settings": json.dumps(settings)
+        }
+        
+        response = self.request(
+            path=f"updateClient/{find_client['id']}",
+            method="POST",
+            params=params
+        )
+
+        return self.verify_response(response)

@@ -13,15 +13,19 @@ class Inbounds:
             `~Dict | errors.NotFound`: On success, a dict is returned else 404 error will be raised
         """
         
-        send_request = self.request(
-            path="list",
+        
+        if self.panel == "alireza":
+            path = ""
+            
+        elif self.panel == "sanaei":
+            path = "list"
+        
+        response = self.request(
+            path=path,
             method="GET"
         )
 
-        if send_request.status_code != 404 and send_request.headers.get('Content-Type').startswith('application/json'):
-            return send_request.json()
-        else:
-            raise errors.NotFound()
+        return self.verify_response(response)
         
     def get_inbound(
         self: "pyxui.XUI",
@@ -37,12 +41,9 @@ class Inbounds:
             `~Dict | errors.NotFound`: On success, a dict is returned else 404 error will be raised
         """
         
-        send_request = self.request(
+        response = self.request(
             path=f"get/{inbound_id}",
             method="GET"
         )
 
-        if send_request.status_code != 404 and send_request.headers.get('Content-Type').startswith('application/json'):
-            return send_request.json()
-        else:
-            raise errors.NotFound()
+        return self.verify_response(response)

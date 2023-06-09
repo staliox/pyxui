@@ -1,5 +1,5 @@
 # PyXUI 
-An application with python that allows you to modify your xui panel ([Sanaeii 3x-ui](https://github.com/MHSanaei/3x-ui)) ([alireza0 x-ui](https://github.com/alireza0/x-ui))
+An application with python that allows you to modify your xui panel ([alireza0 x-ui](https://github.com/alireza0/x-ui)) ([Sanaeii 3x-ui](https://github.com/MHSanaei/3x-ui)) 
 
 ## How To Install
 ```
@@ -11,8 +11,19 @@ pip install pyxui
 ```python
 from pyxui import XUI
 
-xui = XUI("staliox.com", 54321, True) # Make note if you use https set True else don't set anything
-xui = XUI("staliox.com", 54321, True, "6fo3") # If you set panel path, you can set your panel path string
+# Basic:
+xui = XUI(
+    full_address="https://staliox.com:2087",
+    panel="alireza", # Your panel name, "alireza" or "sanaei"
+)
+
+# Advanced:
+xui = XUI(
+    full_address="http://staliox.site:2087",
+    panel="alireza", # Your panel name, "alireza" or "sanaei"
+    https=False # Make note if you don't use https set False else set True
+    session_string=... # If you have session cookie to use panel without login
+)
 ```
 
 - Login in your panel
@@ -69,7 +80,23 @@ get_inbounds = xui.get_inbounds()
 ```python
 get = xui.add_client(
     inbound_id=1,
-    email="fdsfgf@gmal.com",
+    email="example@gmal.com",
+    uuid="5d3d1bac-49cd-4b66-8be9-a728efa205fa",
+    enable = True,
+    flow = "",
+    limit_ip = 0,
+    total_gb = 5368709120,
+    expire_time = 1684948641772,
+    telegram_id = "",
+    subscription_id = ""
+)
+```
+
+- Update exist client
+```python
+get = xui.update_client(
+    inbound_id=1,
+    email="example@gmal.com",
     uuid="5d3d1bac-49cd-4b66-8be9-a728efa205fa",
     enable = True,
     flow = "",
