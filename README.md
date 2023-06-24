@@ -136,6 +136,7 @@ get_client = xui.delete_client(
     email="Me",
     uuid="5d3d1bac-49cd-4b66-8be9-a728efa205fa" # Make note you don't have to pass both of them (email, uuid), just one is enough
 )
+```
 
 # Create vmess and vless config string
 - Import config_generator
