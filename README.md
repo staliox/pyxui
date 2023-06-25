@@ -86,7 +86,7 @@ get = xui.add_client(
     flow = "",
     limit_ip = 0,
     total_gb = 5368709120,
-    expire_time = 1684948641772,
+    expire_time = 1684948641772, # You must pass 13 digit timestamp
     telegram_id = "",
     subscription_id = ""
 )
