@@ -118,14 +118,15 @@ get_client = xui.get_client(
 
 # Result
 {
-    'id': 1,
-    'inboundId': 1,
-    'enable': True,
-    'email': 'Me',
-    'up': 194895832,
-    'down': 4959786483,
-    'expiryTime': 0,
-    'total': 0
+     'email': 'Me',
+     'enable': True,
+     'expiryTime': 0,
+     'flow': 'xtls-rprx-vision',
+     'id': '5d3d1bac-49cd-4b66-8be9-a728efa205fa',
+     'limitIp': 0,
+     'subId': '',
+     'tgId': '',
+     'totalGB': 0
 }
 ```
 
