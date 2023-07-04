@@ -46,6 +46,43 @@ class Clients:
 
         raise errors.NotFound()
 
+    def get_client_stats(
+        self: "pyxui.XUI",
+        inbound_id: int,
+        email: str,
+    ) -> Union[dict, errors.NotFound]:
+        """Get client stats from existing inbound.
+
+        Parameters:
+            inbound_id (``int``):
+                Inbound id
+                
+            email (``str``):
+               Email of the client
+            
+        Returns:
+            `~Dict`: On success, a dict is returned else 404 error will be raised
+        """
+        
+        get_inbounds = self.get_inbounds()
+        
+        if not email:
+            raise ValueError()
+        
+        for inbound in get_inbounds['obj']:
+            if inbound['id'] != inbound_id:
+                continue
+            
+            client_stats = inbound['clientStats']
+            
+            for client in client_stats:
+                if client['email'] != email:
+                    continue
+                
+                return client
+
+        raise errors.NotFound()
+
     def add_client(
         self: "pyxui.XUI",
         inbound_id: int,
