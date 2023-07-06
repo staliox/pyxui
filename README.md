@@ -76,7 +76,7 @@ get_inbounds = xui.get_inbounds()
 }
 ```
 
-- Add client to exist inbound
+- Add client to the existing inbound
 ```python
 get = xui.add_client(
     inbound_id=1,
@@ -92,7 +92,7 @@ get = xui.add_client(
 )
 ```
 
-- Update exist client
+- Update the existing client
 ```python
 get = xui.update_client(
     inbound_id=1,
@@ -108,7 +108,7 @@ get = xui.update_client(
 )
 ```
 
-- Get client information:
+- Get client's information:
 ```python
 get_client = xui.get_client(
     inbound_id=1,
@@ -118,18 +118,39 @@ get_client = xui.get_client(
 
 # Result
 {
-    'id': 1,
-    'inboundId': 1,
-    'enable': True,
-    'email': 'Me',
-    'up': 194895832,
-    'down': 4959786483,
-    'expiryTime': 0,
-    'total': 0
+     'email': 'Me',
+     'enable': True,
+     'expiryTime': 0,
+     'flow': 'xtls-rprx-vision',
+     'id': '5d3d1bac-49cd-4b66-8be9-a728efa205fa',
+     'limitIp': 0,
+     'subId': '',
+     'tgId': '',
+     'totalGB': 0
 }
 ```
 
-- Delete client from exist inbound:
+- Get client's statistics:
+```python
+get_client = xui.get_client_stats(
+    inbound_id=1,
+    email="Me",
+)
+
+# Result
+{
+     'id': 1,
+     'inboundId': 1,
+     'enable': True,
+     'email': 'Me',
+     'up': 111494230,
+     'down': 620533614,
+     'expiryTime': 0,
+     'total': 0
+}
+```
+
+- Delete client from the existing inbound:
 ```python
 get_client = xui.delete_client(
     inbound_id=1,

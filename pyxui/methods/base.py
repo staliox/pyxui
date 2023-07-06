@@ -10,17 +10,17 @@ class Base:
         method: str,
         params: dict = None
     ) -> requests.Response:
-        """Request to xui panel.
+        """Request to the xui panel.
 
         Parameters:
             path (``str``):
-                Your request path, you can see all of them in https://github.com/alireza0/x-ui#api-routes
+                The request path, you can see all of them in https://github.com/alireza0/x-ui#api-routes
                 
             method (``str``):
-                Your request method, GET or POST
+                The request method, GET or POST
                 
             params (``dict``, optional):
-                Your request parameters, None is set for default but it's necessary for some POST methods
+                The request parameters, None is set for default but it's necessary for some POST methods
 
         Returns:
             `~requests.Response`: On success, the response is returned.
