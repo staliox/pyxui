@@ -7,7 +7,7 @@ class Inbounds:
     def get_inbounds(
         self: "pyxui.XUI"
     ) -> Union[dict, errors.NotFound]:
-        """Get inbounds of xui panel.
+        """Get inbounds of the xui panel.
         
         Returns:
             `~Dict | errors.NotFound`: On success, a dict is returned else 404 error will be raised
@@ -31,7 +31,7 @@ class Inbounds:
         self: "pyxui.XUI",
         inbound_id: int
     ) -> Union[dict, errors.NotFound]:
-        """Get inbounds of xui panel.
+        """Get inbounds of the xui panel.
 
         Parameters:
             inbound_id (``int``):
