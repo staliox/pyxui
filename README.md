@@ -21,7 +21,7 @@ xui = XUI(
 xui = XUI(
     full_address="http://staliox.site:2087",
     panel="alireza", # Your panel name, "alireza" or "sanaei"
-    https=False # Make note if you don't use https set False else set True
+    https=False, # Make note if you don't use https set False else set True
     session_string=... # If you have session cookie to use panel without login
 )
 ```
