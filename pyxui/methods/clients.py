@@ -43,7 +43,7 @@ class Clients:
                 if client['email'] != email and clientid != uuid:
                     continue
                 
-                return client
+                return client , protocol
 
         raise errors.NotFound()
 
@@ -187,14 +187,14 @@ class Clients:
             `~Dict`: On success, a dict is returned else 404 error will be raised
         """
         
-        find_client = self.get_client(
+        find_client , protocol = self.get_client(
             inbound_id=inbound_id,
             email=email,
             uuid=uuid
         )
-        
+        clientid = find_client['id'] if protocol in ['vless','vmess'] else find_client['password']
         response = self.request(
-            path=f"{inbound_id}/delClient/{find_client['id']}",
+            path=f"{inbound_id}/delClient/{clientid}",
             method="POST"
         )
 
@@ -250,7 +250,7 @@ class Clients:
             `~Dict`: On success, a dict is returned else 404 error will be raised
         """
         
-        find_client = self.get_client(
+        find_client , protocol = self.get_client(
             inbound_id=inbound_id,
             email=email,
             uuid=uuid
@@ -278,9 +278,9 @@ class Clients:
             "id": inbound_id,
             "settings": json.dumps(settings)
         }
-        
+        clientid = find_client['id'] if protocol in ['vless','vmess'] else find_client['password']
         response = self.request(
-            path=f"updateClient/{find_client['id']}",
+            path=f"updateClient/{clientid}",
             method="POST",
             params=params
         )
