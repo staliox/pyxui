@@ -37,9 +37,10 @@ class Clients:
                 continue
             
             settings = json.loads(inbound['settings'])
-            
+            protocol = inbound['protocol']
             for client in settings['clients']:
-                if client['email'] != email and client['id'] != uuid:
+                clientid = client['id'] if protocol in ['vless','vmess'] else client['password']
+                if client['email'] != email and clientid != uuid:
                     continue
                 
                 return client
