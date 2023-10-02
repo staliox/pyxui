@@ -255,11 +255,11 @@ class Clients:
             email=email,
             uuid=uuid
         )
-        
+        uuid_key = "password" if protocol == 'trojan' else "id"
         settings = {
             "clients": [
                 {
-                    "id": uuid,
+                    uuid_key: uuid,
                     "email": email,
                     "enable": enable,
                     "flow": flow,
@@ -273,7 +273,7 @@ class Clients:
             "decryption": "none",
             "fallbacks": []
         }
-            
+        
         params = {
             "id": inbound_id,
             "settings": json.dumps(settings)
