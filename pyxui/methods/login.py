@@ -35,7 +35,7 @@ class Login:
         )
 
         if send_request.status_code == 200:
-            self.session_string = send_request.cookies.get("session")
+            self.session_string = send_request.cookies.get("x-ui")
 
             if self.session_string:
                 return True
