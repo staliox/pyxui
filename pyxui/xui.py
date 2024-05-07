@@ -14,10 +14,11 @@ class XUI(Methods):
         self.panel = panel
         self.https = https
         self.session_string = session_string
-        self.api_path = None
 
         if self.panel == "alireza":
             self.api_path = "xui/API"
+            self.cookie_name = "x-ui"
             
         elif self.panel == "sanaei":
             self.api_path = "panel/api"
+            self.cookie_name = "session"

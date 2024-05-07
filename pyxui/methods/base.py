@@ -32,7 +32,7 @@ class Base:
             url = f"{self.full_address}/{self.api_path}/inbounds/{path}"
 
         if self.session_string:
-            cookie = {'session': self.session_string}
+            cookie = {self.cookie_name: self.session_string}
         else:
             cookie = None
 

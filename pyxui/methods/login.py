@@ -35,12 +35,9 @@ class Login:
         )
 
         if send_request.status_code == 200:
-            self.session_string = send_request.cookies.get("session")
+            self.session_string = send_request.cookies.get(self.cookie_name)
 
             if self.session_string:
                 return True
-            else:
-                raise errors.BadLogin()
-
-        else:
-            raise errors.BadLogin()
+            
+        raise errors.BadLogin()
