@@ -21,4 +21,4 @@ class XUI(Methods):
             
         elif self.panel == "sanaei":
             self.api_path = "panel/api"
-            self.cookie_name = "3x-ui"
+            self.cookie_name = "session"
