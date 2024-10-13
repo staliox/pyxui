@@ -3,7 +3,7 @@ An application with python that allows you to modify your xui panel ([alireza0 x
 
 ## How To Install
 ```
-pip install pyxui
+pip install git+https://github.com/staliox/pyxui.git
 ```
 
 ## How To Use
