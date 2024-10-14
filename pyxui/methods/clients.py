@@ -285,3 +285,38 @@ class Clients:
         )
 
         return self.verify_response(response)
+    
+    def reset_client_traffic(
+        self: "pyxui.XUI",
+        inbound_id: int,
+        email: str = False,
+        uuid: str = False
+    ) -> Union[dict, errors.NotFound]:
+        """Delete client from the existing inbound.
+
+        Parameters:
+            inbound_id (``int``):
+                Inbound id
+                
+            email (``str``, optional):
+               Email of the client
+                
+            uuid (``str``, optional):
+               UUID of the client
+            
+        Returns:
+            `~Dict`: On success, a dict is returned else 404 error will be raised
+        """
+        
+        find_client = self.get_client(
+            inbound_id=inbound_id,
+            email=email,
+            uuid=uuid
+        )
+        
+        response = self.request(
+            path=f"{inbound_id}/resetClientTraffic/{find_client['email']}",
+            method="POST"
+        )
+
+        return self.verify_response(response)
