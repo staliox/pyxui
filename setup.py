@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
     
-VERSION = "1.0.3"
+VERSION = "2.0.0"
 
-with open("README.md", "r") as f:
+with open("README.md", "r", encoding="utf-8") as f:
     readme = f.read()
 
 setup(
@@ -20,9 +20,11 @@ setup(
         "xui panel"
     ],
     packages=find_packages(),
-    install_requires=["requests"],
+    python_requires=">=3.8",
+    install_requires=["aiohttp>=3.8"],
     classifiers=[
         "Programming Language :: Python :: 3",
+        "Framework :: AsyncIO",
         "License :: OSI Approved :: MIT License",
     ],
     license="MIT"

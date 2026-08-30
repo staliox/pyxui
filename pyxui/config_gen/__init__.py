@@ -1,12 +1,36 @@
 import json
 import base64
-from urllib.parse import urlencode
+from urllib.parse import urlencode, quote
 
-def config_generator(protocol: str, config = dict, data: dict = None) -> str:
+def config_generator(protocol: str, config: dict, data: dict = None) -> str:
+    """Build a vmess:// or vless:// share link out of a config dict.
+
+    Parameters:
+        protocol (``str``):
+            Either ``"vmess"`` or ``"vless"``
+
+        config (``dict``):
+            The config fields, see the README for an example
+
+        data (``dict``, optional):
+            Extra query parameters, only used by vless
+
+    Returns:
+        `~str`: The share link
+    """
+
     if protocol == "vmess":
-        string = "vmess://" + base64.b64encode(json.dumps(config).encode('utf-8')).decode('utf-8')
+        payload = json.dumps(config, separators=(",", ":")).encode("utf-8")
 
-    elif protocol == "vless":
-        string = "vless://{}@{}:{}?{}#{}".format(config['id'], config['add'], config['port'], urlencode(data), config['ps'])
+        return "vmess://" + base64.b64encode(payload).decode("utf-8")
 
-    return string
+    if protocol == "vless":
+        return "vless://{}@{}:{}?{}#{}".format(
+            config["id"],
+            config["add"],
+            config["port"],
+            urlencode(data or {}),
+            quote(str(config.get("ps", "")), safe="")
+        )
+
+    raise ValueError(f'Unsupported protocol "{protocol}", expected vmess or vless')

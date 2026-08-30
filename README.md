@@ -1,5 +1,9 @@
 # PyXUI 
-An application with python that allows you to modify your xui panel ([alireza0 x-ui](https://github.com/alireza0/x-ui)) ([Sanaeii 3x-ui](https://github.com/MHSanaei/3x-ui)) 
+An async python library that allows you to modify your xui panel ([alireza0 x-ui](https://github.com/alireza0/x-ui)) ([Sanaeii 3x-ui](https://github.com/MHSanaei/3x-ui)) 
+
+> **v2.0 is async only.** Every panel method is now a coroutine and must be awaited.
+> The HTTP layer moved from `requests` to `aiohttp`, and a single `ClientSession`
+> is reused for the whole lifetime of the client.
 
 ## How To Install
 ```
@@ -9,6 +13,7 @@ pip install -U git+https://github.com/staliox/pyxui.git
 ## How To Use
 - Import pyxui in your .py file
 ```python
+import asyncio
 from pyxui import XUI
 
 # Basic:
@@ -22,23 +27,63 @@ xui = XUI(
     full_address="http://staliox.site:2087",
     panel="alireza", # Your panel name, "alireza" or "sanaei"
     https=False, # Make note if you don't use https set False else set True
-    session_string=... # If you have session cookie to use panel without login
+    session_string=..., # If you have session cookie to use panel without login
+    timeout=10.0, # Per request timeout in seconds
+    max_connections=20, # Size of the connection pool
+    cache_ttl=0.0, # Seconds the inbounds list may be reused from memory, 0 disables it
+    auto_relogin=True, # Login again automatically when the session expires
+    raise_on_error=False, # Raise PanelError when the panel answers {"success": false}
+    session=..., # Bring your own aiohttp.ClientSession, pyxui will never close it
 )
 ```
+
+Building the `XUI` object does not touch the network or the event loop, the
+`aiohttp.ClientSession` is created on the first request.
+
+- Always close the client when you are done, or use it as a context manager
+```python
+async def main():
+    async with XUI(full_address="https://staliox.com:2087", panel="sanaei") as xui:
+        await xui.login(USERNAME, PASSWORD)
+        inbounds = await xui.get_inbounds()
+
+asyncio.run(main())
+
+# without the context manager
+xui = XUI(full_address="https://staliox.com:2087", panel="sanaei")
+try:
+    ...
+finally:
+    await xui.close()
+```
+
+If you forget to close it, aiohttp will warn about an unclosed session on exit.
 
 - Login in your panel
 ```python
 from pyxui.errors import BadLogin
 
 try:
-  xui.login(USERNAME, PASSWORD)
+  await xui.login(USERNAME, PASSWORD)
 except BadLogin:
   ...
 ```
 
+Once you have logged in, the credentials are kept in memory and the session is
+refreshed automatically the first time the panel says it expired
+(disable it with `auto_relogin=False`). `await xui.logout()` drops both.
+
+- Run several calls at once
+```python
+inbound, stats = await asyncio.gather(
+    xui.get_inbound(1),
+    xui.get_client_stats(1, email="Me"),
+)
+```
+
 - Get inbounds list
 ```python
-get_inbounds = xui.get_inbounds()
+get_inbounds = await xui.get_inbounds()
 
 # Result
 {
@@ -78,7 +123,7 @@ get_inbounds = xui.get_inbounds()
 
 - Add client to the existing inbound
 ```python
-get = xui.add_client(
+get = await xui.add_client(
     inbound_id=1,
     email="example@gmal.com",
     uuid="5d3d1bac-49cd-4b66-8be9-a728efa205fa",
@@ -93,8 +138,11 @@ get = xui.add_client(
 ```
 
 - Update the existing client
+
+Only the fields you pass are changed, the rest of the client is read from the
+panel and kept as is, so a partial update is safe.
 ```python
-get = xui.update_client(
+get = await xui.update_client(
     inbound_id=1,
     email="example@gmal.com",
     uuid="5d3d1bac-49cd-4b66-8be9-a728efa205fa",
@@ -106,11 +154,14 @@ get = xui.update_client(
     telegram_id = "",
     subscription_id = ""
 )
+
+# only bump the quota, everything else stays untouched
+get = await xui.update_client(inbound_id=1, email="example@gmal.com", total_gb=10737418240)
 ```
 
 - Get client's information:
 ```python
-get_client = xui.get_client(
+get_client = await xui.get_client(
     inbound_id=1,
     email="Me",
     uuid="5d3d1bac-49cd-4b66-8be9-a728efa205fa" # Make note you don't have to pass both of them (emaill, uuid), just one is enough
@@ -132,7 +183,7 @@ get_client = xui.get_client(
 
 - Get client's statistics:
 ```python
-get_client = xui.get_client_stats(
+get_client = await xui.get_client_stats(
     inbound_id=1,
     email="Me",
 )
@@ -152,10 +203,18 @@ get_client = xui.get_client_stats(
 
 - Delete client from the existing inbound:
 ```python
-get_client = xui.delete_client(
+get_client = await xui.delete_client(
     inbound_id=1,
     email="Me",
     uuid="5d3d1bac-49cd-4b66-8be9-a728efa205fa" # Make note you don't have to pass both of them (email, uuid), just one is enough
+)
+```
+
+- Reset the traffic of a client:
+```python
+await xui.reset_client_traffic(
+    inbound_id=1,
+    email="Me"
 )
 ```
 
@@ -188,7 +247,7 @@ config = {
 generate_config = config_generator("vmess", config)
 
 # Result
-vmess://eyJ2IjogIjIiLCAicHMiOiAiU3RhbGlveC1NZSIsICJhZGQiOiAic3RhbGlveC5jb20iLCAicG9ydCI6ICI0NDMiLCAiaWQiOiAiYTg1ZGVmNTctMGE4Ni00M2QxLWIxNWMtMDQ5NDUxOTA2N2M2IiwgImFpZCI6ICIwIiwgInNjeSI6ICJhdXRvIiwgIm5ldCI6ICJ0Y3AiLCAidHlwZSI6ICJ3cyIsICJob3N0IjogInN0YWxpb3guc2l0ZSIsICJwYXRoIjogIi8iLCAidGxzIjogInRscyIsICJzbmkiOiAic3RhbGlveC5zaXRlIiwgImFscG4iOiAiaDIsaHR0cC8xLjEiLCAiZnAiOiAiY2hyb21lIn0=
+vmess://eyJ2IjoiMiIsInBzIjoiU3RhbGlveC1NZSIsImFkZCI6InN0YWxpb3guY29tIiwicG9ydCI6IjQ0MyIsImlkIjoiYTg1ZGVmNTctMGE4Ni00M2QxLWIxNWMtMDQ5NDUxOTA2N2M2IiwiYWlkIjoiMCIsInNjeSI6ImF1dG8iLCJuZXQiOiJ0Y3AiLCJ0eXBlIjoid3MiLCJob3N0Ijoic3RhbGlveC5zaXRlIiwicGF0aCI6Ii8iLCJ0bHMiOiJ0bHMiLCJzbmkiOiJzdGFsaW94LnNpdGUiLCJhbHBuIjoiaDIsaHR0cC8xLjEiLCJmcCI6ImNocm9tZSJ9
 ```
 
 - VLESS:
